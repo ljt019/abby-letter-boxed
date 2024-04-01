@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import {
-  useLetterContext,
   LetterContextProvider,
+  useLetterContext,
 } from "@/context/LetterContext";
 
 export default function App() {
@@ -17,7 +17,7 @@ function AppContent() {
   const { selectedLetters } = useLetterContext();
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen overflow-hidden">
+    <div className="flex h-screen flex-col items-center justify-center overflow-hidden">
       <div className="mb-4">
         <h1>Selected Letters</h1>
         <div>
@@ -45,7 +45,7 @@ function LetterButton({ letter }: LetterButtonProps) {
       onClick={() => {
         handleSelectLetter(letter);
       }}
-      className={"m-2 rounded-full min-h-10 min-w-10"}
+      className={"m-2 min-h-10 min-w-10 rounded-full"}
     >
       {letter}
     </Button>
