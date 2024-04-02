@@ -13,7 +13,20 @@ export default function App() {
 }
 
 function AppContent() {
-  const { selectedLetters } = useLetterContext();
+  const { selectedLetters, usedLettersInWord, words } = useLetterContext();
+
+  if (usedLettersInWord.length === 3) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center">
+        <div>Game Over!</div>
+        <div className="mt-4">Used Words:</div>
+        <div>{words.join(", ")}</div>
+        <div className="mt-2">
+          It took you {words.length} {words.length > 1 ? "words" : "word"}!
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen flex-col items-center justify-center overflow-hidden">
