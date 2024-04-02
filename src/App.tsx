@@ -1,8 +1,8 @@
+import { GameBoard } from "@/components/game/GameBoard";
 import {
   LetterContextProvider,
   useLetterContext,
 } from "@/context/LetterContext";
-import { GameBoard } from "@/components/game/GameBoard";
 
 export default function App() {
   return (

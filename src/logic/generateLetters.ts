@@ -6,12 +6,34 @@ export function generateLetterSets(): string[][] {
   const LETTERS_PER_SIDE = TOTAL_LETTERS / SIDES;
 
   // Define vowels and consonants
-  const vowels = ['A', 'E', 'I', 'O', 'U'];
-  const consonants = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
+  const vowels = ["A", "E", "I", "O", "U"];
+  const consonants = [
+    "B",
+    "C",
+    "D",
+    "F",
+    "G",
+    "H",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+  ];
 
   // Initialize sets
   const sides: string[][] = [[], [], [], []];
-  
+
   // Helper to get a random element from an array
   const getRandomElement = (array: string[]): string => {
     const index = Math.floor(Math.random() * array.length);
@@ -27,32 +49,52 @@ export function generateLetterSets(): string[][] {
     return element;
   };
 
-  // Generate vowels ensuring one vowel per side
-  const availableVowels = [...vowels]; // Clone the vowels array to manipulate
+  // Available letters pools to ensure uniqueness
+  const availableVowels = [...vowels];
+  const availableConsonants = [...consonants];
+
+  // Ensure a vowel for each side initially
   for (let i = 0; i < SIDES; i++) {
-    // Ensure we distribute at least one vowel per side initially
-    const vowel = removeElement(availableVowels, getRandomElement(availableVowels));
+    const vowel = removeElement(
+      availableVowels,
+      getRandomElement(availableVowels),
+    );
     sides[i].push(vowel);
   }
 
-  // Generate the rest of the letters
-  for (let count = SIDES; count < TOTAL_LETTERS; count++) {
+  // Generate the rest of the letters ensuring uniqueness
+  for (let count = SIDES; count < TOTAL_LETTERS; ) {
     let letter;
-    if (count < MIN_VOWELS) {
-      // If we haven't met the minimum vowel count yet, add another vowel
-      letter = getRandomElement(vowels);
+
+    // Select from the appropriate pool to maintain letter count balance
+    if (
+      availableVowels.length > 0 &&
+      (count < MIN_VOWELS || Math.random() < 0.5)
+    ) {
+      // Select a vowel if we haven't met the MIN_VOWELS or randomly 50% of the time if vowels are available
+      letter = removeElement(
+        availableVowels,
+        getRandomElement(availableVowels),
+      );
+    } else if (availableConsonants.length > 0) {
+      // Select a consonant otherwise
+      letter = removeElement(
+        availableConsonants,
+        getRandomElement(availableConsonants),
+      );
     } else {
-      // Otherwise, add a consonant
-      letter = getRandomElement(consonants);
+      // Break if somehow we've run out of letters to assign
+      break;
     }
-    
-    // Place the letter in a side that hasn't reached the limit yet
+
+    // Attempt to place the letter in a side
     let placed = false;
-    while (!placed) {
+    while (!placed && letter) {
       const sideIndex = Math.floor(Math.random() * SIDES);
       if (sides[sideIndex].length < LETTERS_PER_SIDE) {
         sides[sideIndex].push(letter);
         placed = true;
+        count++; // Only increment count when a letter is successfully placed
       }
     }
   }

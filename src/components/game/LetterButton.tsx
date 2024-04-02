@@ -4,19 +4,28 @@ import cn from "clsx";
 
 interface LetterButtonProps {
   letter: string;
+  side: number;
   className?: string;
 }
 
+export function LetterButton({ letter, side, className }: LetterButtonProps) {
+  const { handleSelectLetter, usedLetters, usedLettersInWord } =
+    useLetterContext();
 
-export function LetterButton({ letter, className }: LetterButtonProps) {
-  const { handleSelectLetter } = useLetterContext();
+  const isUsed = usedLetters.includes(letter);
+  const isUsedInWord = usedLettersInWord.includes(letter);
 
   return (
     <Button
-      onClick={() => {
-        handleSelectLetter(letter);
-      }}
-      className={cn("m-2 min-h-10 min-w-10 rounded-full", className)}
+      onClick={() => handleSelectLetter(letter, side)}
+      className={cn(
+        "m-2 min-h-10 min-w-10 rounded-full",
+        {
+          "bg-muted-foreground": isUsed || isUsedInWord,
+          "hover:bg-muted-foreground": isUsed || isUsedInWord,
+        }, // Conditionally apply class
+        className,
+      )}
     >
       {letter}
     </Button>

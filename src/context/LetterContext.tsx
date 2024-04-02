@@ -1,29 +1,48 @@
-import { createContext, useState, useContext, ReactNode } from "react";
 import { verifyWord } from "@/logic/verifyWord";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 interface LetterContextType {
   selectedLetters: string[];
-  handleSelectLetter: (letter: string) => void;
+  handleSelectLetter: (letter: string, side: number) => void;
   verifyWordExists: (word: string) => void;
   words: string[];
+  lastSelectedSide: number | null;
+  resetGame: () => void;
+  clearCurrentWord: () => void;
+  usedLetters: string[];
+  usedLettersInWord: string[];
 }
 
 const LetterContext = createContext<LetterContextType>({
   selectedLetters: [],
-  handleSelectLetter: () => { },
-  verifyWordExists: () => { },
+  handleSelectLetter: () => {},
+  verifyWordExists: () => {},
   words: [],
+  lastSelectedSide: null,
+  resetGame: () => {},
+  clearCurrentWord: () => {},
+  usedLetters: [],
+  usedLettersInWord: [],
 });
 
 export function LetterContextProvider({ children }: { children: ReactNode }) {
   const [selectedLetters, setSelectedLetters] = useState<string[]>([]);
   const [words, setWords] = useState<string[]>([]);
+  const [lastSelectedSide, setLastSelectedSide] = useState<number | null>(null);
+  const [usedLetters, setUsedLetters] = useState<string[]>([]);
+  const [usedLettersInWord, setUsedLettersInWord] = useState<string[]>([]);
 
-  const handleSelectLetter = (letter: string) => {
-    setSelectedLetters((prevLetters) => {
-      return prevLetters.includes(letter)
-        ? prevLetters.filter((l) => l !== letter)
-        : [...prevLetters, letter];
+  const handleSelectLetter = (letter: string, side: number) => {
+    if (lastSelectedSide !== null && side === lastSelectedSide) {
+      console.log("Select letters from a different side.");
+      return;
+    }
+    setSelectedLetters((prevLetters) => [...prevLetters, letter]);
+    setLastSelectedSide(side);
+    setUsedLetters((prevUsedLetters) => {
+      return prevUsedLetters.includes(letter)
+        ? prevUsedLetters
+        : [...prevUsedLetters, letter];
     });
   };
 
@@ -34,15 +53,47 @@ export function LetterContextProvider({ children }: { children: ReactNode }) {
     } else if (await verifyWord(word)) {
       console.log("Word is valid");
       setWords((prevWords) => [...prevWords, word]);
+      setUsedLettersInWord((prevUsedLettersInWord) => [
+        ...prevUsedLettersInWord,
+        ...selectedLetters,
+      ]);
     } else {
       console.log("Word is invalid");
     }
 
     setSelectedLetters([]);
+    setUsedLetters([]);
+    setLastSelectedSide(null);
+  }
+
+  function resetGame() {
+    setWords([]);
+    setSelectedLetters([]);
+    setLastSelectedSide(null);
+    setUsedLetters([]);
+    setUsedLettersInWord([]);
+  }
+
+  function clearCurrentWord() {
+    setSelectedLetters([]);
+    setLastSelectedSide(null);
+    setUsedLetters([]);
   }
 
   return (
-    <LetterContext.Provider value={{ selectedLetters, handleSelectLetter, verifyWordExists, words }}>
+    <LetterContext.Provider
+      value={{
+        selectedLetters,
+        handleSelectLetter,
+        verifyWordExists,
+        words,
+        lastSelectedSide,
+        resetGame,
+        clearCurrentWord,
+        usedLetters,
+        usedLettersInWord,
+      }}
+    >
       {children}
     </LetterContext.Provider>
   );
@@ -56,10 +107,9 @@ export function useLetterContext() {
 Planning
 
 *Current*
-Need to make submit button that passes the selected letters to verifyWord function, which will check if the word is valid
-If it is valid, the word will be added to the list of words and the corresponding letter buttons will be greyed out
-
-*Future Unsure For Now*
 Find a way to make sure that letters must be selected from sides that aren't thier own
 
+*Completed*
+Need to make submit button that passes the selected letters to verifyWord function, which will check if the word is valid
+If it is valid, the word will be added to the list of words and the corresponding letter buttons will be greyed out
 */
