@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { LetterButton } from "@/components/game/LetterButton";
 import { generateLetterSets } from "@/logic/generateLetters";
 import { Button } from "@/components/ui/button";
+import { useLetterContext } from "@/context/LetterContext";
 
 type LetterPosition = {
   letter: string;
@@ -15,6 +16,8 @@ type LetterPosition = {
 
 export function GameBoard() {
   const [letterPositions, setLetterPositions] = useState<LetterPosition[]>([]);
+
+  const { verifyWordExists, selectedLetters, words } = useLetterContext();
 
   useEffect(() => {
     const generatedSets = generateLetterSets();
@@ -65,7 +68,7 @@ export function GameBoard() {
         </div>
       </Card>
       </div>
-      <Button className="absolute" onClick={() => {console.log("Submit")}}>
+      <Button className="absolute top-[90vh] left-[47vw]" onClick={() => { verifyWordExists(selectedLetters.join('')); console.log(words)}}>
         Submit
       </Button>
       </div>
