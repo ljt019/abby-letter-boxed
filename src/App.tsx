@@ -4,6 +4,7 @@ import {
   LetterContextProvider,
   useLetterContext,
 } from "@/context/LetterContext";
+import cn from "clsx";
 
 export default function App() {
   return (
@@ -35,9 +36,10 @@ function AppContent() {
 
 interface LetterButtonProps {
   letter: string;
+  className?: string;
 }
 
-function LetterButton({ letter }: LetterButtonProps) {
+function LetterButton({ letter, className }: LetterButtonProps) {
   const { handleSelectLetter } = useLetterContext();
 
   return (
@@ -45,97 +47,42 @@ function LetterButton({ letter }: LetterButtonProps) {
       onClick={() => {
         handleSelectLetter(letter);
       }}
-      className={"m-2 min-h-10 min-w-10 rounded-full"}
+      className={cn("m-2 min-h-10 min-w-10 rounded-full", className)}
     >
       {letter}
     </Button>
   );
 }
 
+const letterPositions = [
+  { letter: "A", position: { column: 2, row: 1 } },
+  { letter: "B", position: { column: 3, row: 1 } },
+  { letter: "C", position: { column: 4, row: 1 } },
+  { letter: "D", position: { column: 2, row: 5 } },
+  { letter: "E", position: { column: 3, row: 5 } },
+  { letter: "F", position: { column: 4, row: 5 } },
+  { letter: "G", position: { column: 1, row: 2 } },
+  { letter: "H", position: { column: 1, row: 3 } },
+  { letter: "I", position: { column: 1, row: 4 } },
+  { letter: "J", position: { column: 5, row: 2 } },
+  { letter: "K", position: { column: 5, row: 3 } },
+  { letter: "L", position: { column: 5, row: 4 } },
+];
+
 export function GameBoard() {
   return (
     <div className="flex h-screen items-center justify-center overflow-hidden">
       <Card>
-        <div className={"grid grid-cols-5 grid-rows-5 gap-4"}>
-          {/* Top of Square */}
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "2 / span 1", gridRow: "1" }}
-          >
-            <LetterButton letter="A" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "3 / span 1", gridRow: "1" }}
-          >
-            <LetterButton letter="B" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "4 / span 1", gridRow: "1" }}
-          >
-            <LetterButton letter="C" />
-          </div>
-
-          {/* Bottom of Square */}
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "2 / span 1", gridRow: "5" }}
-          >
-            <LetterButton letter="D" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "3 / span 1", gridRow: "5" }}
-          >
-            <LetterButton letter="E" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "4 / span 1", gridRow: "5" }}
-          >
-            <LetterButton letter="F" />
-          </div>
-
-          {/* Right of Square */}
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "1", gridRow: "2 / span 1" }}
-          >
-            <LetterButton letter="G" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "1", gridRow: "3 / span 1" }}
-          >
-            <LetterButton letter="H" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "1", gridRow: "4 / span 1" }}
-          >
-            <LetterButton letter="I" />
-          </div>
-
-          {/* Left of Square */}
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "5", gridRow: "2 / span 1" }}
-          >
-            <LetterButton letter="J" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "5", gridRow: "3 / span 1" }}
-          >
-            <LetterButton letter="K" />
-          </div>
-          <div
-            className={"flex items-center justify-center"}
-            style={{ gridColumn: "5", gridRow: "4 / span 1" }}
-          >
-            <LetterButton letter="L" />
-          </div>
+        <div className="grid grid-cols-5 grid-rows-5 gap-4">
+          {letterPositions.map(({ letter, position }) => (
+            <div
+              key={letter}
+              className="flex items-center justify-center"
+              style={{ gridColumn: position.column, gridRow: position.row }}
+            >
+              <LetterButton letter={letter} />
+            </div>
+          ))}
         </div>
       </Card>
     </div>
