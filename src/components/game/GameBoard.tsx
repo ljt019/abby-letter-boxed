@@ -71,6 +71,7 @@ export function GameBoard() {
       <Button className="absolute top-[90vh] left-[47vw]" onClick={() => { verifyWordExists(selectedLetters.join('')); console.log(words)}}>
         Submit
       </Button>
+      <span className="text-white absolute top-0 left-0">{words.join(', ')}</span>
       </div>
   );
 }
