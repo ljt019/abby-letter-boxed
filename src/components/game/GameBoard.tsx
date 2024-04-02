@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useLetterContext } from "@/context/LetterContext";
 import { generateLetterSets } from "@/logic/generateLetters";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
 type LetterPosition = {
   letter: string;
@@ -17,11 +17,11 @@ type LetterPosition = {
 export function GameBoard() {
   const [letterPositions, setLetterPositions] = useState<LetterPosition[]>([]);
 
-  const { verifyWordExists, selectedLetters, words } = useLetterContext();
+  const { words } = useLetterContext();
 
   useEffect(() => {
     const generatedSets = generateLetterSets();
-    const positions = [];
+    const positions: SetStateAction<LetterPosition[]> = [];
 
     // Assuming generateLetterSets() returns 4 arrays of 3 letters each
     // Map each letter to a specific position on the square
