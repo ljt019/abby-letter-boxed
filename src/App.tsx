@@ -1,4 +1,5 @@
 import { GameBoard } from "@/components/game/GameBoard";
+import { Button } from "@/components/ui/button";
 import {
   LetterContextProvider,
   useLetterContext,
@@ -13,17 +14,25 @@ export default function App() {
 }
 
 function AppContent() {
-  const { selectedLetters, usedLettersInWord, words } = useLetterContext();
+  const { selectedLetters, usedLettersInWord, words, resetGame } =
+    useLetterContext();
 
-  if (usedLettersInWord.length === 3) {
+  if (usedLettersInWord.length === 12) {
     return (
       <div className="flex h-screen flex-col items-center justify-center">
         <div>Game Over!</div>
         <div className="mt-4">Used Words:</div>
         <div>{words.join(", ")}</div>
-        <div className="mt-2">
+        <div className="my-2">
           It took you {words.length} {words.length > 1 ? "words" : "word"}!
         </div>
+        <Button
+          onClick={() => {
+            resetGame();
+          }}
+        >
+          Restart
+        </Button>
       </div>
     );
   }
