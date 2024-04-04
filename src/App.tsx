@@ -7,11 +7,9 @@ import {
 
 export default function App() {
   return (
-    <div className="max-h-dvh w-dvw">
-      <LetterContextProvider>
-        <AppContent />
-      </LetterContextProvider>
-    </div>
+    <LetterContextProvider>
+      <AppContent />
+    </LetterContextProvider>
   );
 }
 
@@ -21,7 +19,7 @@ function AppContent() {
 
   if (usedLettersInWord.length === 12) {
     return (
-      <div className="flex h-dvh w-dvw flex-col items-center justify-center overflow-hidden">
+      <div className="flex flex-col items-center justify-center overflow-hidden">
         <div>Game Over!</div>
         <div className="mt-4">Used Words:</div>
         <div>{words.join(", ")}</div>

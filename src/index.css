@@ -36,11 +36,9 @@
 
 @layer base {
   * {
-    @apply border-border;
-    @apply max-h-dvh;
+    @apply h-lvh w-lvw border-border;
   }
   body {
     @apply bg-background text-foreground;
-    @apply max-h-dvh;
   }
 }
