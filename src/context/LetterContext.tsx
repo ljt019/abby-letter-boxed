@@ -31,6 +31,7 @@ export function LetterContextProvider({ children }: { children: ReactNode }) {
   const [lastSelectedSide, setLastSelectedSide] = useState<number | null>(null);
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
   const [usedLettersInWord, setUsedLettersInWord] = useState<string[]>([]);
+  const [lastLetterOfWord, setLastLetterOfWord] = useState<string>("");
 
   const handleSelectLetter = (letter: string, side: number) => {
     if (lastSelectedSide !== null && side === lastSelectedSide) {
@@ -47,21 +48,28 @@ export function LetterContextProvider({ children }: { children: ReactNode }) {
   };
 
   async function verifyWordExists(word: string) {
-    // Need to have a variable that is set to false if word.length < 3 or if verifyWord returns false, and true if verifyWord returns true
     if (word.length < 3) {
       console.log("Word must be at least 3 letters long");
-    } else if (await verifyWord(word)) {
+      return; // Exit the function if word is too short
+    }
+
+    const isValidWord = await verifyWord(word);
+    if (isValidWord) {
       console.log("Word is valid");
       setWords((prevWords) => [...prevWords, word]);
       setUsedLettersInWord((prevUsedLettersInWord) => [
         ...prevUsedLettersInWord,
         ...selectedLetters,
       ]);
+      // Update the lastLetterOfWord before resetting the selectedLetters
+      const lastLetter = word[word.length - 1];
+      setLastLetterOfWord(lastLetter); // Move this line here to ensure it's set correctly
+      setSelectedLetters([lastLetter]); // Use the updated lastLetter
     } else {
       console.log("Word is invalid");
+      setSelectedLetters([]); // Reset if the word is invalid
     }
-
-    setSelectedLetters([]);
+    // Clear usedLetters and reset lastSelectedSide regardless of word validity
     setUsedLetters([]);
     setLastSelectedSide(null);
   }
@@ -72,10 +80,12 @@ export function LetterContextProvider({ children }: { children: ReactNode }) {
     setLastSelectedSide(null);
     setUsedLetters([]);
     setUsedLettersInWord([]);
+    setLastLetterOfWord("");
   }
 
   function clearCurrentWord() {
     setSelectedLetters([]);
+    setSelectedLetters([lastLetterOfWord]);
     setLastSelectedSide(null);
     setUsedLetters([]);
   }
