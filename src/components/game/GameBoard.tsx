@@ -15,9 +15,25 @@ type LetterPosition = {
 };
 
 export function GameBoard() {
-  const [letterPositions, setLetterPositions] = useState<LetterPosition[]>([]);
+  return (
+    <div>
+      <div className="m-auto flex flex-col gap-y-8">
+        <SelectedWordDisplay />
+        <LetterButtonCard />
+        <GameControlButtons />
+      </div>
+    </div>
+  );
+}
 
+export function SelectedWordDisplay() {
   const { words } = useLetterContext();
+
+  return <span className="m-auto text-foreground">{words.join(", ")}</span>;
+}
+
+export function LetterButtonCard() {
+  const [letterPositions, setLetterPositions] = useState<LetterPosition[]>([]);
 
   useEffect(() => {
     const generatedSets = generateLetterSets();
@@ -66,27 +82,19 @@ export function GameBoard() {
   }, []);
 
   return (
-    <div>
-      <div className="flex h-screen items-center justify-center overflow-hidden">
-        <Card>
-          <div className="grid grid-cols-5 grid-rows-5 gap-4">
-            {letterPositions.map(({ letter, position, side }, index) => (
-              <div
-                key={index} // Using index as key because letter can repeat
-                className="flex items-center justify-center"
-                style={{ gridColumn: position.column, gridRow: position.row }}
-              >
-                <LetterButton letter={letter} side={side} />
-              </div>
-            ))}
+    <Card>
+      <div className="grid grid-cols-5 grid-rows-5 gap-4">
+        {letterPositions.map(({ letter, position, side }, index) => (
+          <div
+            key={index} // Using index as key because letter can repeat
+            className="flex items-center justify-center"
+            style={{ gridColumn: position.column, gridRow: position.row }}
+          >
+            <LetterButton letter={letter} side={side} />
           </div>
-        </Card>
+        ))}
       </div>
-      <GameControlButtons />
-      <span className="absolute left-0 top-0 text-foreground">
-        {words.join(", ")}
-      </span>
-    </div>
+    </Card>
   );
 }
 
@@ -100,7 +108,7 @@ export function GameControlButtons() {
   } = useLetterContext();
 
   return (
-    <div className="absolute left-[41.5vw] top-[90vh] flex gap-x-4">
+    <div className="m-auto flex gap-x-4">
       <Button onClick={clearCurrentWord}>Clear</Button>
       <Button
         className=""
