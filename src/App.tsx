@@ -19,7 +19,7 @@ function AppContent() {
 
   if (usedLettersInWord.length === 12) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center">
+      <div className="max-w-screen flex h-screen max-h-screen flex-col items-center justify-center overflow-hidden">
         <div>Game Over!</div>
         <div className="mt-4">Used Words:</div>
         <div>{words.join(", ")}</div>
