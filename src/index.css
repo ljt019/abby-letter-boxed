@@ -36,9 +36,9 @@
 
 @layer base {
   * {
-    @apply h-lvh w-lvw border-border;
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply h-lvh bg-background text-foreground;
   }
 }
