@@ -39,6 +39,6 @@
     @apply border-border;
   }
   body {
-    @apply h-lvh bg-background text-foreground;
+    @apply h-dvh w-dvw overflow-y-hidden bg-background text-foreground;
   }
 }
