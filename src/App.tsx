@@ -7,9 +7,11 @@ import {
 
 export default function App() {
   return (
-    <LetterContextProvider>
-      <AppContent />
-    </LetterContextProvider>
+    <div className="max-h-dvh w-dvw">
+      <LetterContextProvider>
+        <AppContent />
+      </LetterContextProvider>
+    </div>
   );
 }
 

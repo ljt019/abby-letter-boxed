@@ -37,8 +37,10 @@
 @layer base {
   * {
     @apply border-border;
+    @apply max-h-dvh;
   }
   body {
     @apply bg-background text-foreground;
+    @apply max-h-dvh;
   }
 }
