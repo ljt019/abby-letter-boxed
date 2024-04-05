@@ -71,7 +71,9 @@ export function LetterContextProvider({ children }: { children: ReactNode }) {
     }
     // Clear usedLetters and reset lastSelectedSide regardless of word validity
     setUsedLetters([]);
-    setLastSelectedSide(null);
+    if (lastLetterOfWord === "") {
+      setLastSelectedSide(null); 
+    }
   }
 
   function resetGame() {
