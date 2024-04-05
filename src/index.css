@@ -39,6 +39,12 @@
     @apply border-border;
   }
   body {
-    @apply h-dvh w-dvw overflow-y-hidden bg-background text-foreground;
+    @apply bg-background text-foreground;
   }
+}
+
+:root {
+  height: 100dvh;
+  width: 100dvw;
+  overflow: hidden;
 }
